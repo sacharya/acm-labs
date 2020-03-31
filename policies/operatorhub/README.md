@@ -1,4 +1,4 @@
-# Import Policies into OCM
+# Import Policies into ACM
 
 kubectl create -f policy_operatorhub.yaml
 
