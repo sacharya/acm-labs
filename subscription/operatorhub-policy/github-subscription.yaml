@@ -6,7 +6,9 @@ metadata:
 spec:
   channel: operatorhub/channel-github
   placement:
-    local: true
+    placementRef:
+      kind: PlacementRule
+      name: dev-placementrule
   packageFilter:
     filterRef:
       name: policies-github-path

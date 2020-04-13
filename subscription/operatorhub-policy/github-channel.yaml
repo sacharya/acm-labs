@@ -7,7 +7,9 @@ metadata:
 spec:
   type: GitHub
   pathname: https://github.com/sacharya/acm-labs.git
-
+  configMapRef:
+      name: policies-github-path
+      kind : configmap
 ---
 apiVersion: v1
 kind: ConfigMap
