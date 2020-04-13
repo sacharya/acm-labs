@@ -24,7 +24,7 @@ spec:
             - example.io/example/ubi-minimal
             source: registry.access.redhat.com/ubi8/ubi-minimal
           - mirrors:
-            - example1.com/example/ubi-minimal
+            - example.com/example/ubi-minimal
             source: registry.access.redhat.com/ubi8/ubi-minimal
 ---
 apiVersion: mcm.ibm.com/v1alpha1
