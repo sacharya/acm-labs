@@ -1,7 +1,7 @@
 apiVersion: policy.mcm.ibm.com/v1alpha1
 kind: Policy
 metadata:
-  name: policy-operatorhub
+  name: openshift-disconnected-policy-operatorhub
   namespace: default
   annotations:
     policy.mcm.ibm.com/standards: NIST-CSF
@@ -24,26 +24,25 @@ spec:
 apiVersion: mcm.ibm.com/v1alpha1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-operatorhub
+  name: openshift-disconnected-binding-operatorhub
   namespace: default
 placementRef:
-  name: placement-policy-operatorhub
+  name: openshift-disconnected-placement-rule
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: policy-operatorhub
+- name: openshift-disconnected-policy-operatorhub
   kind: Policy
   apiGroup: policy.mcm.ibm.com
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-operatorhub
+  name: openshift-disconnected-placement-rule
   namespace: default
 spec:
   clusterConditions:
   - type: OK
   clusterSelector:
-    matchExpressions:
-      - {key: name, operator: In, values: ["spoke"]}
+    matchExpressions: [] #- {key: name, operator: In, values: ["spoke"]}
 

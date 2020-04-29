@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openshift-disonnected-policies-github-path
+  namespace: open-cluster-management
+data:
+    path: resources/policies
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: openshift-disonnected-policies-subscription
+  namespace: open-cluster-management
+spec:
+  channel: open-cluster-management/openshift-disconnected-channel
+  placement:
+    local: true
+  packageFilter:
+    filterRef:
+      name: openshift-disonnected-policies-github-path

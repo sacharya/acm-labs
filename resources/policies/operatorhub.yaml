@@ -1,7 +1,7 @@
 apiVersion: policy.mcm.ibm.com/v1alpha1
 kind: Policy
 metadata:
-  name: openshift-disconnected-policy-repomirror
+  name: openshift-disconnected-policy-operatorhub
   namespace: default
   annotations:
     policy.mcm.ibm.com/standards: NIST-CSF
@@ -14,30 +14,24 @@ spec:
   object-templates:
     - complianceType: musthave
       objectDefinition:
-        apiVersion: operator.openshift.io/v1alpha1
-        kind: ImageContentSourcePolicy
+        apiVersion: config.openshift.io/v1
+        kind: OperatorHub
         metadata:
-          name: ubi8repo
+          name: cluster
         spec:
-          repositoryDigestMirrors:
-          - mirrors:
-            - example.io/example/ubi-minimal
-            source: registry.access.redhat.com/ubi8/ubi-minimal
-          - mirrors:
-            - example.com/example/ubi-minimal
-            source: registry.access.redhat.com/ubi8/ubi-minimal
+          disableAllDefaultSources: true
 ---
 apiVersion: mcm.ibm.com/v1alpha1
 kind: PlacementBinding
 metadata:
-  name: openshift-disconnected-binding-repomirror
+  name: openshift-disconnected-binding-operatorhub
   namespace: default
 placementRef:
   name: openshift-disconnected-placement-rule
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-- name: openshift-disconnected-policy-repomirror
+- name: openshift-disconnected-policy-operatorhub
   kind: Policy
   apiGroup: policy.mcm.ibm.com
 ---
@@ -50,5 +44,5 @@ spec:
   clusterConditions:
   - type: OK
   clusterSelector:
-    matchExpressions: [] #- {key: name, operator: In, values: ["spoke"]}
+    matchExpressions: []
 
