@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openshift-disconnected-policies-github-path
+  name: openshift-disconnected-manifests-github-path
   namespace: open-cluster-management
 data:
-    path: resources/policies
+    path: resources/manifests
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: Subscription
@@ -18,4 +18,4 @@ spec:
     local: true
   packageFilter:
     filterRef:
-      name: openshift-disconnected-policies-github-path
+      name: openshift-disconnected-manifests-github-path

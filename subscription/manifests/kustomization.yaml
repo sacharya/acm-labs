@@ -3,15 +3,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 # namespace to deploy all Resources to
-namespace: operatorhub
+namespace: open-cluster-management
 
 generatorOptions:
   disableNameSuffixHash: true
 
 # list of Resource Config to be Applied
 resources:
-  - namespace.yaml
-  - dev-placement-rule.yaml
-  - github-channel.yaml
-  - github-subscription.yaml
-  - application.yaml
+  - channel.yaml
+  - subscription.yaml

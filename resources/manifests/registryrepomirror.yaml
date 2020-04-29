@@ -1,0 +1,13 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: ImageContentSourcePolicy
+metadata:
+  name: ubi8repo
+  spec:
+    repositoryDigestMirrors:
+    - mirrors:
+      - example.io/example/ubi-minimal
+      source: registry.access.redhat.com/ubi8/ubi-minimal
+    - mirrors:
+      - example.com/example/ubi-minimal
+      source: registry.access.redhat.com/ubi8/ubi-minimal
+
