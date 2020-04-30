@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: test-configmap
-  namespace: operatorhub
-  labels:
-    app: operatorhub
-data:
-    path: resources/operatorhub/manifest
