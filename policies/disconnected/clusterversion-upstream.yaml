@@ -45,5 +45,6 @@ spec:
   clusterConditions:
   - type: OK
   clusterSelector:
-    matchExpressions: []
+    matchLabels:
+      vendor: OpenShift
 
