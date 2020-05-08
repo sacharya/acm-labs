@@ -19,6 +19,7 @@ spec:
         metadata:
           name: version
         spec:
+          channel: stable-4.4
           clusterID: example-cluster-id
           upstream: http://example-cincinnati-policy-engine-uri/api/upgrades_info/v1/graph
 ---
