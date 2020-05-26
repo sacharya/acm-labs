@@ -1,0 +1,52 @@
+apiVersion: policy.mcm.ibm.com/v1alpha1
+kind: Policy
+metadata:
+  name: openshift-disconnected-policy-catalog-source
+  namespace: default
+  annotations:
+    policy.mcm.ibm.com/standards: NIST-CSF
+    policy.mcm.ibm.com/categories: PR.IP Information Protection Processes and Procedures
+    policy.mcm.ibm.com/controls: PR.IP-1 Baseline configuration
+spec:
+  complianceType: musthave
+  remediationAction: enforce
+  disabled: false
+  object-templates:
+    - complianceType: musthave
+      objectDefinition:
+        apiVersion: operators.coreos.com/v1alpha1
+        kind: CatalogSource
+        metadata:
+          name: my-operator-catalog
+          namespace: openshift-marketplace
+        spec:
+          sourceType: grpc
+          image: <registry_host_name>:<port>/olm/redhat-operators:v1 
+          displayName: My Operator Catalog
+          publisher: grpc
+---
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementBinding
+metadata:
+  name: openshift-disconnected-binding-catalog-source
+  namespace: default
+placementRef:
+  name: openshift-disconnected-placement-rule
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: openshift-disconnected-policy-catalog-source
+  kind: Policy
+  apiGroup: policy.mcm.ibm.com
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: openshift-disconnected-placement-rule
+  namespace: default
+spec:
+  clusterConditions:
+  - type: OK
+  clusterSelector:
+    matchLabels:
+      vendor: OpenShift
