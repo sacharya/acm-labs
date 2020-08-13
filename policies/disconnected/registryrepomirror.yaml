@@ -1,33 +1,44 @@
-apiVersion: policy.mcm.ibm.com/v1alpha1
+apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: openshift-disconnected-policy-repomirror
   namespace: default
   annotations:
-    policy.mcm.ibm.com/standards: NIST-CSF
-    policy.mcm.ibm.com/categories: PR.IP Information Protection Processes and Procedures
-    policy.mcm.ibm.com/controls: PR.IP-1 Baseline configuration
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline configuration
 spec:
   complianceType: musthave
   remediationAction: enforce
   disabled: false
-  object-templates:
-    - complianceType: musthave
-      objectDefinition:
-        apiVersion: operator.openshift.io/v1alpha1
-        kind: ImageContentSourcePolicy
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
         metadata:
-          name: ubi8repo
+          name: role-policy-musthave
         spec:
-          repositoryDigestMirrors:
-          - mirrors:
-            - example.io/example/ubi-minimal
-            source: registry.access.redhat.com/ubi8/ubi-minimal
-          - mirrors:
-            - example.com/example/ubi-minimal
-            source: registry.access.redhat.com/ubi8/ubi-minimal
+          remediationAction: enforce
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["default"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: operator.openshift.io/v1alpha1
+                kind: ImageContentSourcePolicy
+                metadata:
+                  name: ubi8repo
+                spec:
+                  repositoryDigestMirrors:
+                  - mirrors:
+                    - example.io/example/ubi-minimal
+                    source: registry.access.redhat.com/ubi8/ubi-minimal
+                  - mirrors:
+                    - example.com/example/ubi-minimal
+                    source: registry.access.redhat.com/ubi8/ubi-minimal
 ---
-apiVersion: mcm.ibm.com/v1alpha1
+apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: openshift-disconnected-binding-repomirror
@@ -39,7 +50,7 @@ placementRef:
 subjects:
 - name: openshift-disconnected-policy-repomirror
   kind: Policy
-  apiGroup: policy.mcm.ibm.com
+  apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
@@ -48,7 +59,8 @@ metadata:
   namespace: default
 spec:
   clusterConditions:
-  - type: OK
+    - status: "True"
+      type: ManagedClusterConditionAvailable
   clusterSelector:
     matchLabels:
       vendor: OpenShift
