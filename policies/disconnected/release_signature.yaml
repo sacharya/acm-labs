@@ -1,31 +1,42 @@
-apiVersion: policy.mcm.ibm.com/v1alpha1
+apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: openshift-disconnected-policy-release-signature
   namespace: default
   annotations:
-    policy.mcm.ibm.com/standards: NIST-CSF
-    policy.mcm.ibm.com/categories: PR.IP Information Protection Processes and Procedures
-    policy.mcm.ibm.com/controls: PR.IP-1 Baseline configuration
+    policy.open-cluster-management.io/standards: NIST-CSF
+    policy.open-cluster-management.io/categories: PR.IP Information Protection Processes and Procedures
+    policy.open-cluster-management.io/controls: PR.IP-1 Baseline configuration
 spec:
   complianceType: musthave
   remediationAction: enforce
   disabled: false
-  object-templates:
-    - complianceType: musthave
-      objectDefinition:
-        apiVersion: v1
-        binaryData:
-          sha256-674200aaa1cc940782aa4b109ebfeaf7206bb57c3e01d62ec8e0b3d5ca910e8f-1: owGbwMvMwMEoOU9/4l9n2UDGtYxKSWLxRQW5xZnpukWphboFUXm5yQF6SZl5ccuyTaqVkosySzKTE3OUrBSqlTJzE9NTwayU/OTs1CLd3MS8zLTU4hLdlMx0IAWUUirOSDQyNbMyMzcxMjBITEw0TE62NDEwtzBKTDRJMjSwTE1KS01MMzcyMEtKMjVPNk41MEwxM0pNtkg1SDJOMU1OtDQ0SLVIU6rVUVAqqSwAWaeUWJKfm5mskJyfV5KYmZdapAB0bV5iSWlRqhJQVWZKal5JZkklssOKUtNSi1LzksHaC0sTK/Uy8/XzC1LzijMy00qA0jmpicWpuimpZfr5yQUwvpWJnomegW5Rsp6hkW6FhVm8mYlSbW1tJ5MoMysDKDzg4caRJ8v/P331Aol9wbsVt0w/G2pqevWWnOYV3jrrx8sS2lnfiC6fweYlLjT19e25N9ui90t5Hd+nOlPcIyM279KlAuHrFvnOC+0jOjRXzy35Ojlb6RWfE/OxN9mT55k+i80121c4VX7zE4vUm3n2/P8OOuibnLadrS//RiDOwPhU4NdZH6UK+UMUTLcfanxwceHS5dPjrHrln3vc28ix2efsAo8u/q0np5XVuFQxuLFlTlxUv1qwd+IiVpHOlQ5b/51xMMtTLp9/Y83CMwpCXU83akUkyCpZHDlmrPn1VGeIx4kw+zTDUuPYNRWr5nvbGlXZzfvs+ihbyf97zcdzPAfZhWImWm5rrf+aulleI6M0OmxvcvDEuZrOL9NDzy2wWuzqU3bo8stLWwWjDXmd1uX5Nzz0+pm6ht3jQOlfdeFH4Yl3V75cY/zLd7feuzhZ6QqG0m8Mc54WhrnW+vJnaZ+aZCz4/VrWZr77S7rVnVnWVv/Mitqetyhtwbc3Kldz90tXzV0621k2mO9o26L5CrwnokMXNlV9aCw86qcc8OXyhXPR6/OUGnxUpbTcUkyOT5jB3L9t5YF+60SrpKMFjj/3rpr//fTqY7w3M1om877KEpBW3nDD9JLM6y3M3osV10qK7nyz58JHg+M7fri5CccIswSW57Lt/bTkP3PE87qt8jkPp0/M/mZyrG5yzURjOf95LzcWnDzs7bhnnv2RVR8iAQ==
-        kind: ConfigMap
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
         metadata:
-          creationTimestamp: null
-          labels:
-            release.openshift.io/verification-signatures: ""
-          name: sha256-674200aaa1cc940782aa4b109ebfeaf7206bb57c3e01d62ec8e0b3d5ca910e8f
-          namespace: openshift-config-managed
+          name: role-policy-musthave
+        spec:
+          remediationAction: enforce
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["default"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                binaryData:
+                  sha256-674200aaa1cc940782aa4b109ebfeaf7206bb57c3e01d62ec8e0b3d5ca910e8f-1: owGbwMvMwMEoOU9/4l9n2UDGtYxKSWLxRQW5xZnpukWphboFUXm5yQF6SZl5ccuyTaqVkosySzKTE3OUrBSqlTJzE9NTwayU/OTs1CLd3MS8zLTU4hLdlMx0IAWUUirOSDQyNbMyMzcxMjBITEw0TE62NDEwtzBKTDRJMjSwTE1KS01MMzcyMEtKMjVPNk41MEwxM0pNtkg1SDJOMU1OtDQ0SLVIU6rVUVAqqSwAWaeUWJKfm5mskJyfV5KYmZdapAB0bV5iSWlRqhJQVWZKal5JZkklssOKUtNSi1LzksHaC0sTK/Uy8/XzC1LzijMy00qA0jmpicWpuimpZfr5yQUwvpWJnomegW5Rsp6hkW6FhVm8mYlSbW1tJ5MoMysDKDzg4caRJ8v/P331Aol9wbsVt0w/G2pqevWWnOYV3jrrx8sS2lnfiC6fweYlLjT19e25N9ui90t5Hd+nOlPcIyM279KlAuHrFvnOC+0jOjRXzy35Ojlb6RWfE/OxN9mT55k+i80121c4VX7zE4vUm3n2/P8OOuibnLadrS//RiDOwPhU4NdZH6UK+UMUTLcfanxwceHS5dPjrHrln3vc28ix2efsAo8u/q0np5XVuFQxuLFlTlxUv1qwd+IiVpHOlQ5b/51xMMtTLp9/Y83CMwpCXU83akUkyCpZHDlmrPn1VGeIx4kw+zTDUuPYNRWr5nvbGlXZzfvs+ihbyf97zcdzPAfZhWImWm5rrf+aulleI6M0OmxvcvDEuZrOL9NDzy2wWuzqU3bo8stLWwWjDXmd1uX5Nzz0+pm6ht3jQOlfdeFH4Yl3V75cY/zLd7feuzhZ6QqG0m8Mc54WhrnW+vJnaZ+aZCz4/VrWZr77S7rVnVnWVv/Mitqetyhtwbc3Kldz90tXzV0621k2mO9o26L5CrwnokMXNlV9aCw86qcc8OXyhXPR6/OUGnxUpbTcUkyOT5jB3L9t5YF+60SrpKMFjj/3rpr//fTqY7w3M1om877KEpBW3nDD9JLM6y3M3osV10qK7nyz58JHg+M7fri5CccIswSW57Lt/bTkP3PE87qt8jkPp0/M/mZyrG5yzURjOf95LzcWnDzs7bhnnv2RVR8iAQ==
+                kind: ConfigMap
+                metadata:
+                  creationTimestamp: null
+                  labels:
+                    release.openshift.io/verification-signatures: ""
+                  name: sha256-674200aaa1cc940782aa4b109ebfeaf7206bb57c3e01d62ec8e0b3d5ca910e8f
+                  namespace: openshift-config-managed
 ---
-apiVersion: mcm.ibm.com/v1alpha1
+apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: openshift-disconnected-binding-release-signature
@@ -37,7 +48,7 @@ placementRef:
 subjects:
 - name: openshift-disconnected-policy-release-signature
   kind: Policy
-  apiGroup: policy.mcm.ibm.com
+  apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
@@ -46,7 +57,8 @@ metadata:
   namespace: default
 spec:
   clusterConditions:
-  - type: OK
+    - status: "True"
+      type: ManagedClusterConditionAvailable
   clusterSelector:
     matchLabels:
       vendor: OpenShift
